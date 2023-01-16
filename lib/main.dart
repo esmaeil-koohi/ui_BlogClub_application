@@ -23,6 +23,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.all(
+              const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: defaultFontFamily),
+            ),
+          ),
+        ),
         textTheme: TextTheme(
             subtitle1: TextStyle(
               fontFamily: defaultFontFamily,
@@ -30,9 +40,21 @@ class MyApp extends StatelessWidget {
               fontSize: 18,
               fontWeight: FontWeight.w200,
             ),
+            subtitle2: TextStyle(
+              fontFamily: defaultFontFamily,
+              color: primaryTextColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
             headline4: TextStyle(
               fontFamily: defaultFontFamily,
               fontSize: 24,
+              color: primaryTextColor,
+              fontWeight: FontWeight.w700,
+            ),
+            headline5: TextStyle(
+              fontFamily: defaultFontFamily,
+              fontSize: 20,
               color: primaryTextColor,
               fontWeight: FontWeight.w700,
             ),
@@ -63,6 +85,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -89,8 +112,11 @@ class HomeScreen extends StatelessWidget {
                     style: themeData.textTheme.headline4),
               ),
               _storyList(context, stories),
-              const SizedBox(height: 16,),
+              const SizedBox(
+                height: 16,
+              ),
               const _CategoryList(),
+              const _PostList(),
             ],
           ),
         ),
@@ -209,8 +235,8 @@ class _CategoryList extends StatelessWidget {
         itemBuilder: (context, index, realIndex) {
           return _CategoryItem(
             category: categories[realIndex],
-            leftSpace: index ==0 ? 32 : 8,
-            righrSpace:  index == categories.length-1 ? 32 : 8,
+            leftSpace: index == 0 ? 32 : 8,
+            righrSpace: index == categories.length - 1 ? 32 : 8,
           );
         },
         options: CarouselOptions(
@@ -231,12 +257,13 @@ class _CategoryItem extends StatelessWidget {
   final Category category;
   final double leftSpace;
   final double righrSpace;
-  const _CategoryItem({
-    Key? key,
-    required this.category,
-    required this.leftSpace,
-    required this.righrSpace
-  }) : super(key: key);
+
+  const _CategoryItem(
+      {Key? key,
+      required this.category,
+      required this.leftSpace,
+      required this.righrSpace})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -294,6 +321,116 @@ class _CategoryItem extends StatelessWidget {
               )),
         ],
       ),
+    );
+  }
+}
+
+class _Post extends StatelessWidget {
+  final PostData post;
+  const _Post({Key? key,required this.post }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 10,
+              color: Color(0x1a5282ff),
+            )
+          ]),
+      child: Row(
+        children: [
+          ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child:
+              Image.asset('assets/img/posts/small/${post.imageFileName}')),
+          const SizedBox(width: 16,),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  post.caption,
+                  style: const TextStyle(
+                      fontFamily: MyApp.defaultFontFamily,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: Color(0xff3776AED)),
+                ),
+                const SizedBox(height: 8.0,),
+                Text(post.title, style: Theme.of(context).textTheme.subtitle2,),
+                const SizedBox(height: 16,),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                  Icon(
+                    CupertinoIcons.hand_thumbsup, size: 20,
+                    color: Theme.of(context).textTheme.bodyText2!.color,),
+                    const SizedBox(width: 4,),
+                    Text(post.likes, style: Theme.of(context).textTheme.bodyText2,),
+                    const SizedBox(width: 16,),
+                    Icon(CupertinoIcons.clock, size: 20, color: Theme.of(context).textTheme.bodyText2!.color,),
+                    const SizedBox(width: 4,),
+                    Text(post.time, style: Theme.of(context).textTheme.bodyText2,),
+                    Expanded(child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        post.isBookmarked?
+                        CupertinoIcons.bookmark_fill:
+                        CupertinoIcons.bookmark, size: 20,
+                        color: Theme.of(context).textTheme.bodyText2!.color,),
+                    ),),
+                    const SizedBox(width: 6,),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class _PostList extends StatelessWidget {
+  const _PostList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final posts = AppDatabase.posts;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 32, right: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Latest News',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              TextButton(onPressed: () {}, child: const Text('More'))
+            ],
+          ),
+        ),
+        ListView.builder(
+          itemCount: posts.length,
+          itemExtent: 141,
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+          itemBuilder: (context, index) {
+            final post = posts[index];
+            return _Post(post: post);
+          },
+        ),
+      ],
     );
   }
 }
