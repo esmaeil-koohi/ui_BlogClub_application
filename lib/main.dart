@@ -3,11 +3,18 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ui_blog_club/carousel/carousel_slider.dart';
 import 'package:ui_blog_club/data.dart';
 
 void main() {
   runApp(const MyApp());
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -58,6 +65,12 @@ class MyApp extends StatelessWidget {
               color: primaryTextColor,
               fontWeight: FontWeight.w700,
             ),
+            caption: TextStyle(
+              fontFamily: defaultFontFamily,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff7B8BB2),
+            ),
             headline6: TextStyle(
               fontFamily: defaultFontFamily,
               fontWeight: FontWeight.bold,
@@ -70,7 +83,12 @@ class MyApp extends StatelessWidget {
               fontSize: 14,
             )),
       ),
-      home: const HomeScreen(),
+      home: Stack(
+        children: [
+          Positioned.fill(child: const HomeScreen()),
+          Positioned(bottom: 0, right: 0, left: 0, child: _BottomNavigation())
+        ],
+      ),
     );
   }
 }
@@ -325,79 +343,6 @@ class _CategoryItem extends StatelessWidget {
   }
 }
 
-class _Post extends StatelessWidget {
-  final PostData post;
-  const _Post({Key? key,required this.post }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 10,
-              color: Color(0x1a5282ff),
-            )
-          ]),
-      child: Row(
-        children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child:
-              Image.asset('assets/img/posts/small/${post.imageFileName}')),
-          const SizedBox(width: 16,),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  post.caption,
-                  style: const TextStyle(
-                      fontFamily: MyApp.defaultFontFamily,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      color: Color(0xff3776AED)),
-                ),
-                const SizedBox(height: 8.0,),
-                Text(post.title, style: Theme.of(context).textTheme.subtitle2,),
-                const SizedBox(height: 16,),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                  Icon(
-                    CupertinoIcons.hand_thumbsup, size: 20,
-                    color: Theme.of(context).textTheme.bodyText2!.color,),
-                    const SizedBox(width: 4,),
-                    Text(post.likes, style: Theme.of(context).textTheme.bodyText2,),
-                    const SizedBox(width: 16,),
-                    Icon(CupertinoIcons.clock, size: 20, color: Theme.of(context).textTheme.bodyText2!.color,),
-                    const SizedBox(width: 4,),
-                    Text(post.time, style: Theme.of(context).textTheme.bodyText2,),
-                    Expanded(child: Container(
-                      alignment: Alignment.centerRight,
-                      child: Icon(
-                        post.isBookmarked?
-                        CupertinoIcons.bookmark_fill:
-                        CupertinoIcons.bookmark, size: 20,
-                        color: Theme.of(context).textTheme.bodyText2!.color,),
-                    ),),
-                    const SizedBox(width: 6,),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
 class _PostList extends StatelessWidget {
   const _PostList({Key? key}) : super(key: key);
 
@@ -432,5 +377,180 @@ class _PostList extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _Post extends StatelessWidget {
+  final PostData post;
+
+  const _Post({Key? key, required this.post}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 10,
+              color: Color(0x1a5282ff),
+            )
+          ]),
+      child: Row(
+        children: [
+          ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child:
+                  Image.asset('assets/img/posts/small/${post.imageFileName}')),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  post.caption,
+                  style: const TextStyle(
+                      fontFamily: MyApp.defaultFontFamily,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: Color(0xff3776AED)),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                Text(
+                  post.title,
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Icon(
+                      CupertinoIcons.hand_thumbsup,
+                      size: 20,
+                      color: Theme.of(context).textTheme.bodyText2!.color,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      post.likes,
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Icon(
+                      CupertinoIcons.clock,
+                      size: 20,
+                      color: Theme.of(context).textTheme.bodyText2!.color,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      post.time,
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        child: Icon(
+                          post.isBookmarked
+                              ? CupertinoIcons.bookmark_fill
+                              : CupertinoIcons.bookmark,
+                          size: 20,
+                          color: Theme.of(context).textTheme.bodyText2!.color,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  const _BottomNavigation({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 85,
+      child: Stack(
+        children: [
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: Container(
+              height: 65,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _bottomNavigationItem(context, 'Home.png', 'Home.png', 'Home'),
+                  _bottomNavigationItem(context, 'Articles.png', 'Article.png', 'Article'),
+                  const SizedBox(width: 8,),
+                  _bottomNavigationItem(context, 'Search.png', 'Search.png', 'Search'),
+                  _bottomNavigationItem(context, 'Menu.png', 'Menu.png', 'Menu'),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 60,
+              height: 60,
+              margin: const EdgeInsets.only(bottom: 15.0),
+              child: Image.asset('assets/img/icons/plus.png'),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32.5),
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 20,
+                    color: Color(0xaa9B8487),
+                  )
+                ],
+                color: const Color(0xff376AED),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _bottomNavigationItem(
+      BuildContext context,
+      String iconFileName,
+      String activeIconFileName,
+      String title) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+     children: [
+       Image.asset('assets/img/icons/$iconFileName'),
+       const SizedBox(height: 4,),
+       Text(title, style: Theme.of(context).textTheme.caption,)
+     ],
+      );
   }
 }
