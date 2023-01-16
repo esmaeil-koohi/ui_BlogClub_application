@@ -28,8 +28,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryTextColor = Color(0xff0D253C);
-    final secondaryTextColor = Color(0xff2D4379);
+    const primaryTextColor = Color(0xff0D253C);
+    const secondaryTextColor = Color(0xff2D4379);
+    const primaryColor = Color(0xff376AED);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -44,6 +45,14 @@ class MyApp extends StatelessWidget {
                   fontFamily: defaultFontFamily),
             ),
           ),
+        ),
+        colorScheme: ColorScheme.light(
+          primary: primaryColor,
+          onPrimary: Colors.white,
+          onSurface: primaryTextColor,
+          surface: Colors.white,
+          background: Color(0xffFBFCFF),
+          onBackground: primaryTextColor,
         ),
         textTheme: TextTheme(
             subtitle1: TextStyle(
