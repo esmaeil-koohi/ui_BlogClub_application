@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ui_blog_club/gen/assets.gen.dart';
-import 'on_boarding_screen.dart';
+import 'package:ui_blog_club/on_boarding.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

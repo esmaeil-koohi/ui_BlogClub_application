@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:ui_blog_club/auth.dart';
 import 'package:ui_blog_club/data.dart';
 import 'package:ui_blog_club/gen/assets.gen.dart';
 import 'package:ui_blog_club/home.dart';
@@ -97,7 +98,7 @@ class _OnBoardingState extends State<OnBoarding> {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                      const HomeScreen()));
+                                      const AuthScreen()));
                             } else {
                               _pageController.animateToPage(page + 1,
                                   duration: const Duration(milliseconds: 500),
