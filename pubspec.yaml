@@ -70,7 +70,7 @@ flutter:
     - assets/img/posts/large/
     - assets/img/posts/small/
     - assets/img/stories/
-    - assets/img//background/
+    - assets/img/background/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

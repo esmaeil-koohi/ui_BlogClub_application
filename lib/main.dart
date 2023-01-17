@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ui_blog_club/article.dart';
 import 'package:ui_blog_club/carousel/carousel_slider.dart';
 import 'package:ui_blog_club/data.dart';
 import 'package:ui_blog_club/gen/assets.gen.dart';
@@ -36,6 +37,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: primaryTextColor,
+          elevation: 0,
+        ),
+        snackBarTheme: const SnackBarThemeData(
+          backgroundColor: primaryColor,
+        ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             textStyle: MaterialStateProperty.all(
@@ -97,7 +106,7 @@ class MyApp extends StatelessWidget {
               fontSize: 14,
             )),
       ),
-      home: SplashScreen(),
+      home: ArticleScreen(),
       // home: SplashScreen(),
       // home: Stack(
       //   children: [
