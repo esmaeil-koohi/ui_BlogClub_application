@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        colorScheme: ColorScheme.light(
+        colorScheme: const ColorScheme.light(
           primary: primaryColor,
           onPrimary: Colors.white,
           onSurface: primaryTextColor,
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           background: Color(0xffFBFCFF),
           onBackground: primaryTextColor,
         ),
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
             subtitle1: TextStyle(
               fontFamily: defaultFontFamily,
               color: secondaryTextColor,
@@ -98,6 +98,7 @@ class MyApp extends StatelessWidget {
             )),
       ),
       home: SplashScreen(),
+      // home: SplashScreen(),
       // home: Stack(
       //   children: [
       //     Positioned.fill(

@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ui_blog_club/gen/assets.gen.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  static const int loginTab = 0;
+  static const int signUpTab = 1;
+  int selectionTabIndex = loginTab;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +45,23 @@ class AuthScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text('LOGIN', style: tabTextTitle,),
-                          Text('SING UP', style: tabTextTitle,),
+                          TextButton(
+                            onPressed: () {
+                            setState(() {
+                              selectionTabIndex = loginTab;
+                            });
+                          }, child: Text('LOGIN', style: tabTextTitle.apply(
+                              color: selectionTabIndex == loginTab ? Colors.white : Colors.white54
+                          )),),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                selectionTabIndex = signUpTab;
+                              });
+                          }, child: Text('SIGN UP', style: tabTextTitle.apply(
+                              color: selectionTabIndex == signUpTab ? Colors.white : Colors.white54
+                          )),),
+
                         ],
                       ),
                     ),
@@ -52,7 +76,7 @@ class AuthScreen extends StatelessWidget {
                           child: SingleChildScrollView(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(32,48,32,32),
-                              child: _Login(themeData: themeData),
+                              child: selectionTabIndex == loginTab? _login(themeData) : signUp(themeData),
                             ),
                           ),
                         )),
@@ -65,47 +89,21 @@ class AuthScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class _Login extends StatelessWidget {
-  const _Login({
-    Key? key,
-    required this.themeData,
-  }) : super(key: key);
-
-  final ThemeData themeData;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget _login(ThemeData themeData){
+     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:  [
         Text('Welcome back', style: themeData.textTheme.headline4,),
-         const SizedBox(height: 8,),
-         Text('Sign in with your account',
-             style: themeData.textTheme.subtitle1!.apply(fontSizeFactor: 0.80)),
+        const SizedBox(height: 8,),
+        Text('Sign in with your account',
+            style: themeData.textTheme.subtitle1!.apply(fontSizeFactor: 0.80)),
         const SizedBox(height: 16,),
-        const TextField(
-         decoration: InputDecoration(
-           label: Text('Username'),
-         ),
-       ),
-         const PasswordTextField(),
-      const SizedBox(
-        height: 24,
-      ),
-      ElevatedButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            minimumSize: MaterialStateProperty.all(
-              Size(MediaQuery.of(context).size.width, 60),
-            ),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)))),
-        child: Text(
-          'login'.toUpperCase(),
+        usernameAndFullnameTextField('Username'),
+         _passwordTextField(),
+        const SizedBox(
+          height: 24,
         ),
-      ),
+        _confirmInformationButton('LOGIN'),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -117,48 +115,91 @@ class _Login extends StatelessWidget {
         const SizedBox(height: 16,),
         const Center(child: Text('OR SING IN WITH', style:TextStyle(letterSpacing: 2),),),
         const SizedBox(height: 16,),
-        Row(
-          mainAxisAlignment:MainAxisAlignment.center ,
-          children: [
-            Assets.img.icons.google.image(width: 36, height: 36),
-            const SizedBox(width: 24,),
-            Assets.img.icons.facebook.image(width: 36, height: 36),
-            const SizedBox(width: 24,),
-            Assets.img.icons.twitter.image(width: 36, height: 36),
-          ],
-        ),
+        _logos(),
       ],
     );
   }
-}
 
-class PasswordTextField extends StatefulWidget {
-  const PasswordTextField({
-    Key? key,
-  }) : super(key: key);
+  Widget usernameAndFullnameTextField(String nameTextField) {
+    return TextField(
+        decoration: InputDecoration(
+          label: Text(nameTextField),
+        ),
+      );
+  }
 
-  @override
-  State<PasswordTextField> createState() => _PasswordTextFieldState();
-}
+  Widget _logos() {
+    return Row(
+        mainAxisAlignment:MainAxisAlignment.center ,
+        children: [
+          Assets.img.icons.google.image(width: 36, height: 36),
+          const SizedBox(width: 24,),
+          Assets.img.icons.facebook.image(width: 36, height: 36),
+          const SizedBox(width: 24,),
+          Assets.img.icons.twitter.image(width: 36, height: 36),
+        ],
+      );
+  }
 
-class _PasswordTextFieldState extends State<PasswordTextField> {
-  bool obscureText = true;
-  @override
-  Widget build(BuildContext context) {
+  Widget _confirmInformationButton(String buttonName) {
+    return ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            minimumSize: MaterialStateProperty.all(
+              Size(MediaQuery.of(context).size.width, 60),
+            ),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12)))),
+        child: Text(
+          buttonName
+        ),
+      );
+  }
+
+  Widget _passwordTextField(){
+    bool obscureText = true;
     return TextField(
       obscureText: obscureText,
       enableSuggestions: false,
       autocorrect: false,
       decoration: InputDecoration(
-      label: const Text('Password'),
-      suffix: InkWell(onTap: () {
-        setState(() {
-          obscureText = !obscureText;
-        });
-      }, child:Text( obscureText? 'show' : 'hide',
-        style: TextStyle(fontSize: 14,
-            color: Theme.of(context).colorScheme.primary),)),
-    ),
-                                 );
+        label: const Text('Password'),
+        suffix: InkWell(onTap: () {
+          setState(() {
+            obscureText = !obscureText;
+          });
+        }, child:Text( obscureText? 'show' : 'hide',
+          style: TextStyle(fontSize: 14,
+              color: Theme.of(context).colorScheme.primary),)),
+      ),
+    );
   }
+
+ Widget signUp(ThemeData themeData){
+   return Column(
+     crossAxisAlignment: CrossAxisAlignment.start,
+     children:  [
+       Text('Welcome to clog club', style: themeData.textTheme.headline4,),
+       const SizedBox(height: 8,),
+       Text('please enter your information',
+           style: themeData.textTheme.subtitle1!.apply(fontSizeFactor: 0.80)),
+       const SizedBox(height: 16,),
+       usernameAndFullnameTextField('Fullname'),
+       usernameAndFullnameTextField('Username'),
+       _passwordTextField(),
+       const SizedBox(
+         height: 24,
+       ),
+       _confirmInformationButton('SIGN IN'),
+       const SizedBox(height: 16,),
+       const Center(child: Text('OR SING UP WITH', style:TextStyle(letterSpacing: 2),),),
+       const SizedBox(height: 16,),
+       _logos(),
+     ],
+   );
+ }
+
 }
+
+
+
