@@ -8,6 +8,7 @@ import 'package:ui_blog_club/article.dart';
 import 'package:ui_blog_club/carousel/carousel_slider.dart';
 import 'package:ui_blog_club/data.dart';
 import 'package:ui_blog_club/gen/assets.gen.dart';
+import 'package:ui_blog_club/profile.dart';
 import 'package:ui_blog_club/splash.dart';
 
 import 'home.dart';
@@ -104,9 +105,15 @@ class MyApp extends StatelessWidget {
               fontFamily: defaultFontFamily,
               color: secondaryTextColor,
               fontSize: 14,
-            )),
+            ),
+            bodyText1: TextStyle(
+              fontFamily: defaultFontFamily,
+              color: primaryTextColor,
+              fontSize: 14,
+            )
+        ),
       ),
-      home: ArticleScreen(),
+      home: ProfileScreen(),
       // home: SplashScreen(),
       // home: Stack(
       //   children: [
