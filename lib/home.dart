@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                 height: 16,
               ),
               const _CategoryList(),
-              const _PostList(),
+              const PostList(),
             ],
           ),
         ),
@@ -256,8 +256,8 @@ class _CategoryItem extends StatelessWidget {
   }
 }
 
-class _PostList extends StatelessWidget {
-  const _PostList({Key? key}) : super(key: key);
+class PostList extends StatelessWidget {
+  const PostList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +285,7 @@ class _PostList extends StatelessWidget {
           physics: const ClampingScrollPhysics(),
           itemBuilder: (context, index) {
             final post = posts[index];
-            return _Post(post: post);
+            return PostItem(post: post);
           },
         ),
       ],
@@ -293,10 +293,10 @@ class _PostList extends StatelessWidget {
   }
 }
 
-class _Post extends StatelessWidget {
+class PostItem extends StatelessWidget {
   final PostData post;
 
-  const _Post({Key? key, required this.post}) : super(key: key);
+  const PostItem({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -130,7 +130,6 @@ class MyApp extends StatelessWidget {
 
 class _BottomNavigation extends StatelessWidget {
   const _BottomNavigation({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -153,7 +152,7 @@ class _BottomNavigation extends StatelessWidget {
                   _bottomNavigationItem(context, 'Menu.png', 'Menu.png', 'Menu'),
                 ],
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
               ),
             ),
