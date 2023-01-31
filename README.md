@@ -1,16 +1,4 @@
-# ui_blog_club
+![Screenshot 2023-01-31 235310](https://user-images.githubusercontent.com/101805424/215877617-d6792b87-c421-4f2c-a8be-afd097ab0076.png)
+![Screenshot 2023-01-31 235407](https://user-images.githubusercontent.com/101805424/215877641-fa14817f-fbac-4f05-8b4a-492b328b9761.png)
+![Screenshot 2023-01-31 235424](https://user-images.githubusercontent.com/101805424/215877685-163e50ea-791f-4091-adf0-148d82ee3215.png)
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
